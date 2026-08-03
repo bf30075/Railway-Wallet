@@ -103,7 +103,7 @@ private func storeItem() {
   guard
     let secretString = String(data: secret, encoding: .utf8),
     secretString.range(
-      of: "^0x[0-9a-fA-F]{64}$",
+      of: "^[0-9a-fA-F]{64}$",
       options: .regularExpression
     ) != nil
   else {

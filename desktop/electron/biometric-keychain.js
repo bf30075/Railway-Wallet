@@ -3,11 +3,11 @@ const { randomUUID } = require('crypto');
 const { app, safeStorage, systemPreferences } = require('electron');
 const fs = require('fs/promises');
 const path = require('path');
+const { isValidAuthKey } = require('./auth-key');
 
 const HELPER_NAME = 'RailwayBiometricKeychain';
 const MAX_OUTPUT_BYTES = 4096;
 const HELPER_TIMEOUT_MS = 60000;
-const AUTH_KEY_PATTERN = /^0x[0-9a-fA-F]{64}$/;
 const FALLBACK_FILE_NAME = 'biometric-key.safe-storage';
 
 const errorForExitCode = code => {
@@ -134,7 +134,7 @@ const getNativeStatus = async () => {
 };
 
 const storeNativeKey = async authKey => {
-  if (typeof authKey !== 'string' || !AUTH_KEY_PATTERN.test(authKey)) {
+  if (!isValidAuthKey(authKey)) {
     return { success: false, error: 'invalid-key' };
   }
 
@@ -149,7 +149,7 @@ const retrieveNativeKey = async () => {
   if (result.code !== 0) {
     return { success: false, error: errorForExitCode(result.code) };
   }
-  if (!AUTH_KEY_PATTERN.test(result.stdout)) {
+  if (!isValidAuthKey(result.stdout)) {
     return { success: false, error: 'failed' };
   }
   return { success: true, key: result.stdout };
@@ -207,7 +207,7 @@ const retrieveFallbackKey = async () => {
   try {
     const encrypted = await fs.readFile(getFallbackPath());
     const authKey = safeStorage.decryptString(encrypted);
-    if (!AUTH_KEY_PATTERN.test(authKey)) {
+    if (!isValidAuthKey(authKey)) {
       return { success: false, error: 'failed' };
     }
     return { success: true, key: authKey };
@@ -242,7 +242,7 @@ const getStatus = async () => {
 };
 
 const enrollKey = async authKey => {
-  if (typeof authKey !== 'string' || !AUTH_KEY_PATTERN.test(authKey)) {
+  if (!isValidAuthKey(authKey)) {
     return { success: false, error: 'invalid-key' };
   }
 
