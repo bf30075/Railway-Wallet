@@ -47,6 +47,7 @@ import {
   MdDesktopMac as DesktopIcon,
   MdDownload as DownloadIcon,
   MdEditCalendar as EditCalendarIcon,
+  MdFingerprint as FingerprintIcon,
   MdLockOpen as LockOpenIcon,
   MdLockOutline as LockClosedIcon,
   MdOpenInNew as OpenInNewIcon,
@@ -128,6 +129,7 @@ export enum IconType {
   TractorIcon = 'TractorIcon',
   EditCalendarIcon = 'EditCalendarIcon',
   ChefHatIcon = 'ChefHatIcon',
+  Fingerprint = 'Fingerprint',
 }
 
 export const renderIcon = (
@@ -144,6 +146,8 @@ export const renderIcon = (
       return <TractorIcon {...props} />;
     case IconType.ChefHatIcon:
       return <ChefHatIcon {...props} />;
+    case IconType.Fingerprint:
+      return <FingerprintIcon {...props} />;
     case IconType.EditCalendarIcon:
       return <EditCalendarIcon {...props} />;
     case IconType.Refresh:
