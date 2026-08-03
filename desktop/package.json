@@ -242,6 +242,7 @@
     },
     "files": [
       "build/**/*",
+      "electron/auth-key.js",
       "electron/biometric-keychain.js",
       "electron/main.js",
       "electron/preload.js",
